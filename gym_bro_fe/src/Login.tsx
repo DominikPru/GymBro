@@ -1,11 +1,11 @@
 import React, { useState } from 'react'
 import "./Login.scss"
 
-type Props = {}
+type Props = {logedIn: any}
 
 
 
-export default function Login({}: Props) {
+export default function Login({logedIn}: Props) {
   const [count, setCount] = useState(0)
 
   return (
@@ -20,7 +20,7 @@ export default function Login({}: Props) {
         <input type="text" placeholder="User Name"  />
         <input type="email" placeholder="Email"/>
         <input type="password" placeholder="Password"/>
-        <button>Create Account</button>
+        <button onClick={()=>{logedIn(true)}}>Create Account</button>
         
       </form>
     </div>
@@ -33,7 +33,7 @@ export default function Login({}: Props) {
         <input type="email" placeholder="Email"/>
         <input type="password" placeholder="Password"/>
         <span>Forgot your <span className="forgot">password?</span></span>
-        <button>Log in</button>
+        <button onClick={()=>{logedIn(true)}}>Log in</button>
         
       </form>
     </div>

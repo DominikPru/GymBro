@@ -1,29 +1,39 @@
-import React from 'react';
+import React, { useState } from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './App';
 import Login from './Login';
 import reportWebVitals from './reportWebVitals';
 
-const loggedIn: boolean = false;
+
+
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
 
+type Props = {}
+
+export default function Index({}: Props) {
+const [loggedIn, setLogged] = useState(false)
+
 if (loggedIn){
-  root.render(
+  return(
     <React.StrictMode>
       <App />
     </React.StrictMode>
   );
 }
 else{
-  root.render(
+  return(
     <React.StrictMode>
-      <Login/>
+      <Login logedIn={setLogged}/>
     </React.StrictMode>
   );
 }
+}
+
+root.render(<div><Index/></div>)
+
 
 
 
