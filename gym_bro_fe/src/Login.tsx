@@ -1,5 +1,6 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import "./Login.scss"
+import axios from 'axios'
 
 type Props = {logedIn: any}
 
@@ -7,6 +8,19 @@ type Props = {logedIn: any}
 
 export default function Login({logedIn}: Props) {
   const [count, setCount] = useState(0)
+ 
+  useEffect(() => {
+    axios.post('http://localhost:8888/register', {
+      name: "test"
+    })
+    .then((response) => {
+      console.log(response.data);
+        // Handle data
+    })
+    .catch((error) => {
+      console.log(error);
+    })
+  }, []);
 
   return (
 

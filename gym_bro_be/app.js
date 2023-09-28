@@ -4,7 +4,15 @@ const mongoose = require('mongoose')
 const { Schema } = mongoose;
 const { MongoClient, ServerApiVersion } = require('mongodb');
 const uri = "mongodb+srv://fancy:Kocicka123@gymbro.33d0low.mongodb.net/?retryWrites=true&w=majority";
-
+var cors = require('cors')
+var bodyParser = require('body-parser')
+var jsonParser = bodyParser.json()
+const corsOptions ={
+  origin:'http://localhost:3000', 
+  credentials:true,            //access-control-allow-credentials:true
+  optionSuccessStatus:200
+}
+app.use(cors(corsOptions)) // Use this after the variable declaration
 //Schema for Users
 const blogSchema = new Schema({
     email: String, 
@@ -44,3 +52,9 @@ app.get('/', (req, res) => {
     run();
     res.json({name: "john doe"})
   })
+
+  
+app.post('/register', jsonParser, (req, res) => {
+  console.log(req.body)
+  res.send('Hello World!')
+})
