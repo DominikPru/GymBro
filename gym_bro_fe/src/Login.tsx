@@ -4,26 +4,46 @@ import axios from 'axios'
 
 type Props = {logedIn: any}
 
-
-
 export default function Login({logedIn}: Props) {
-  const [count, setCount] = useState(0)
- 
-  useEffect(() => {
-    axios.post('http://localhost:8888/register', {
-      name: "test"
-    })
-    .then((response) => {
-      console.log(response.data);
-        // Handle data
-    })
-    .catch((error) => {
-      console.log(error);
-    })
-  }, []);
+  //stateHooks for register
+  const [userName, setUserName] = useState('');
+  const [userEmail, setUserEmail] = useState('');
+  const [userPassword, setUserPassword] = useState('');
 
+  const handleChangeName = (event: { target: { value: any; }; }) => {
+    setUserName(event.target.value);
+  };
+  const handleChangeEmail = (event: { target: { value: any; }; }) => {
+    setUserEmail(event.target.value);
+  };
+  const handleChangePass = (event: { target: { value: any; }; }) => {
+    setUserPassword(event.target.value);
+  };
+  //end of register StateHooks
+
+  const [count, setCount] = useState(0)
+  const [message, setMessage] = useState("")
+
+  //register the user, happenes after button click
+async function register(){
+  axios.post('http://localhost:8888/register', {
+    Name: userName,
+    Email: userEmail,
+    Pass: userPassword
+  })
+  .then((response) => {
+    console.log(response.data);
+    setMessage(response.data)
+  })
+  .catch((error) => {
+    console.log(error);
+  })
+}
+  
   return (
 
+    <div>
+      <div className="messageText">{message}</div>
     <div className={count == 1 ? "container right-panel-active" : "container"} id="container" >
 
     <div className="form sign_up">
@@ -31,10 +51,10 @@ export default function Login({logedIn}: Props) {
 
         <h1 className="marginSet20">Create An Account</h1>
       
-        <input type="text" placeholder="User Name"  />
-        <input type="email" placeholder="Email"/>
-        <input type="password" placeholder="Password"/>
-        <button onClick={()=>{logedIn(true)}}>Create Account</button>
+        <input type="text" onChange={handleChangeName} placeholder="User Name"  />
+        <input type="email" onChange={handleChangeEmail} placeholder="Email"/>
+        <input type="password" onChange={handleChangePass} placeholder="Password"/>
+        <button onClick={()=>{register()}}>Create Account</button>
         
       </form>
     </div>
@@ -68,6 +88,6 @@ export default function Login({logedIn}: Props) {
     </div>
     
   </div>
-
+</div>
   )
   }

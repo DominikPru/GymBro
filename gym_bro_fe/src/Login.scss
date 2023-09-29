@@ -144,6 +144,15 @@ button:active {
 
 /* button */
 
+/* message */
+.messageText{
+  display: flex;
+  justify-content: center;
+  color: white; 
+  margin-bottom: 10px;
+}
+/* !message */
+
 /* container */
 .container {
   background-color: hsla(0, 100%, 100%, 0.05);
