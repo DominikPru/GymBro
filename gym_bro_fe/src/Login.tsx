@@ -39,6 +39,24 @@ async function register(){
     console.log(error);
   })
 }
+
+async function login(){
+  axios.post('http://localhost:8888/login', {
+    Email: userEmail,
+    Pass: userPassword
+  })
+  .then((response) => {
+    console.log(response.data);
+    if (response.data == "Auth Valid"){
+      logedIn(true)
+    }
+    setMessage(response.data)
+    
+  })
+  .catch((error) => {
+    console.log(error);
+  })
+}
   
   return (
 
@@ -64,10 +82,10 @@ async function register(){
        
         <h1 className="marginSet20">Been Here Before?</h1>
         
-        <input type="email" placeholder="Email"/>
-        <input type="password" placeholder="Password"/>
+        <input type="email" onChange={handleChangeEmail} placeholder="Email"/>
+        <input type="password" onChange={handleChangePass} placeholder="Password"/>
         <span>Forgot your <span className="forgot">password?</span></span>
-        <button onClick={()=>{logedIn(true)}}>Log in</button>
+        <button onClick={()=>{login()}}>Log in</button>
         
       </form>
     </div>
