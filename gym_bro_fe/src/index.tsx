@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import ReactDOM from 'react-dom/client';
-import App from './App';
-import Login from './Login';
+import App from './components/App';
+import Login from './components/Login';
 import reportWebVitals from './reportWebVitals';
 
 const root = ReactDOM.createRoot(
