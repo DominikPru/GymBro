@@ -1,9 +1,9 @@
-import React from 'react'
+import React, { useState } from 'react'
 import "./Sidebar.scss"
 import mainLogo from'../logo.png';
 
-type Props = {}
-function Sidebar({}: Props) {
+type Props = {selectedIndex: number, setIndex: any}
+function Sidebar({selectedIndex, setIndex}: Props) {
   return (
     <div>
   <div id="particles-js"></div>
@@ -14,21 +14,21 @@ function Sidebar({}: Props) {
       </div>
     </div>
     <div className="main-menu">
-      <div className="menu-item">
-        <a href="">
+      <div onClick={() => {setIndex(0)}} className={selectedIndex == 0 ? "menu-item active" : "menu-item"}>
+        <a>
           <i className="menu-icon fa fa-home"></i>
           <p className="menu-text">Home</p>
         </a>
       </div>
-      <div className="menu-item">
-        <a href="">
-          <i className="menu-icon fa fa-search"></i>
+      <div onClick={() => {setIndex(1)}} className={selectedIndex == 1 ? "menu-item active" : "menu-item"}>
+        <a>
+          <i className="menu-icon fa fa-dumbbell"></i>
           <p className="menu-text">Search</p>
         </a>
       </div>
-      <div className="menu-item">
-        <a href="">
-          <i className="menu-icon fa fa-tag"></i>
+      <div onClick={() => {setIndex(2)}} className={selectedIndex == 2 ? "menu-item active" : "menu-item"}>
+        <a>
+          <i className="menu-icon fa fa-clock-rotate-left"></i>
           <p className="menu-text">Tags</p>
         </a>
       </div>

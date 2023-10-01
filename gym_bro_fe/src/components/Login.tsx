@@ -65,7 +65,7 @@ async function login(){
     <div className={count == 1 ? "container right-panel-active" : "container"} id="container" >
 
     <div className="form sign_up">
-      <form action="#">
+      <form onSubmit={e => e.preventDefault()}>
 
         <h1 className="marginSet20">Create An Account</h1>
       
@@ -78,7 +78,7 @@ async function login(){
     </div>
 
     <div className="form sign_in">
-      <form action="#">
+      <form onSubmit={e => e.preventDefault()}>
        
         <h1 className="marginSet20">Been Here Before?</h1>
         

@@ -43,6 +43,9 @@
     overflow: hidden;
     z-index: 2;
     box-shadow: 0 10px 20px #111;
+    position: absolute;
+    left: 260px;
+    top: 24px;
   }
   
   /* sidebar open */
@@ -121,6 +124,7 @@
   }
   .menu-item.active {
     background-color: #333333;
+    border-radius: 15px;
   }
   
   .menu-item:hover {
@@ -130,6 +134,7 @@
   .main-menu i.menu-icon {
     font-size: 15px;
     cursor: pointer;
+    color: #ccc;
   }
   
   /* expand icon */
