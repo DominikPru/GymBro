@@ -1,6 +1,7 @@
 import React, {useState} from 'react'
 import Sidebar from "./Sidebar"
 import "./App.scss"
+import Workout from './NewWorkout'
 
 type Props = {}
 
@@ -10,7 +11,9 @@ if (selectedTab == 0){
   return (
     <div className="containerr">
     <Sidebar selectedIndex={selectedTab} setIndex={setTab}/>
+    <div className="jc">
     <h1>Home</h1>
+    </div>
     </div>
   )
 }
@@ -18,7 +21,9 @@ else if (selectedTab == 1){
   return (
     <div className="containerr">
     <Sidebar selectedIndex={selectedTab} setIndex={setTab}/>
-    <h1>Workout</h1>
+    <div className="jc">
+    <NewWorkout/>
+    </div>
     </div>
   )
 }
@@ -27,7 +32,9 @@ else{
   return (
     <div className="containerr">
     <Sidebar selectedIndex={selectedTab} setIndex={setTab}/>
+    <div className="jc">
     <h1>History</h1>
+    </div>
     </div>
   )
 }

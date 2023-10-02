@@ -36,16 +36,14 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    height: 95vh;
+    height: 97vh;
     width: 60px;
     background-color: #131313;
     border-radius: 10px;
     overflow: hidden;
     z-index: 2;
     box-shadow: 0 10px 20px #111;
-    position: absolute;
-    left: 260px;
-    top: 24px;
+    
   }
   
   /* sidebar open */
