@@ -1,7 +1,7 @@
 import React, {useState} from 'react'
 import Sidebar from "./Sidebar"
 import "./App.scss"
-import Workout from './NewWorkout'
+import NewWorkout from './NewWorkout'
 
 type Props = {}
 
