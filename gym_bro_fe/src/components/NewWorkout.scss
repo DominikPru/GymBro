@@ -1,11 +1,8 @@
 /* Quick and dirty normalize hax */
-  .containerrr {
-    height: 100vh;
-    display: flex;
-    flex-direction: column;
-    margin-top: 150px;
-    align-items: start;
-  }
+ 
+.newWrapper{
+  width: 100%;
+}
 
 .button{
     color: white;
@@ -40,6 +37,7 @@
     border-radius: 2rem;
     border: none;
     transition: transform 0.1s ease-in-out;
+    margin-bottom: 100px;
   }
   
   ::placeholder {
@@ -64,12 +62,17 @@
     color: #a1a1a1;
     transition: all 0.1s ease-in-out;
   }
-
+  .reset {
+    all: unset;
+}
   .searchInputIcon:hover{
 cursor: pointer;
   }
-  
-  .containerrr:focus-within > 
-  .searchInputWrapper > .searchInputIcon {
+  .fullWidth{
+    display: flex;
+    justify-content: center;
+  }
+  .searchInputWrapper:focus-within > 
+    .reset > .searchInputIcon {
     right: -0.2rem;
   }
