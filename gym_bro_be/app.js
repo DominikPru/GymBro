@@ -120,6 +120,22 @@ async function insertExercise(req, res) {
   }
 }
 
+async function checkExercise(req, res) {
+  try {
+    const existingEx = await ExModel.findOne({ ownerId: req.body.UserId, name: req.body.Name });
+    if (existingEx){
+      res.send("Selected")
+    }
+    else {
+      res.send("Free")
+    }
+    }
+  catch (error) {
+    console.error("Error:", error);
+    res.status(500).send("Internal Server Error");
+  }
+}
+
 app.post("/register", (req, res) => {
   console.log(req.body.Email);
   insertRegister(req, res);
@@ -131,8 +147,11 @@ app.post("/login", (req, res) => {
 });
 
 app.post("/new_exercise", (req, res) => {
-  console.log(req.body.Email);
   insertExercise(req, res);
+});
+
+app.post("/check_exercise", (req, res) => {
+  checkExercise(req, res);
 });
 
 const listener = app.listen(8888, function () {

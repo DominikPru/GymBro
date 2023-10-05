@@ -1,0 +1,20 @@
+.plan-card{
+    width: 40%;
+    background-color: black;
+    padding: 10px;
+    border-radius: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.input-container {
+    display: inline-block;
+    margin-right: 10px; 
+  }
+  
+.name{
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}

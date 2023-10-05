@@ -4,6 +4,7 @@ import "./App.scss";
 import NewWorkout from "./NewWorkout";
 import ExCard from "./ExCard";
 import axios from "axios";
+import ExPlanCard from "./exPlanCard";
 type Props = {userId:string};
 
 export default function App({ userId }: Props) {
@@ -80,7 +81,7 @@ export default function App({ userId }: Props) {
       <div className="containerr">
         <Sidebar selectedIndex={selectedTab} setIndex={setTab} />
         <div className="jc">
-          <h1>Plan</h1>
+          <ExPlanCard name="test dwadw dawd wad aw dwa " exId="s"/>
         </div>
       </div>
     );
