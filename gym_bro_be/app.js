@@ -25,8 +25,15 @@ const userSchema = new mongoose.Schema({
   username: String,
 });
 
+const exSchema = new mongoose.Schema({
+  name: String,
+  ownerId: String,
+});
+
 // Create UserModel
 const UserModel = mongoose.model("User", userSchema);
+
+const ExModel = mongoose.model("Exercise", exSchema);
 
 //Hashes user password
 async function hashPass(pass) {
@@ -84,7 +91,7 @@ async function checkLogin(req, res) {
 
     if (existingUser) {
       if (await validateUser(existingUser.password, req.body.Pass)) {
-        res.send("Auth Valid");
+        res.send("Auth Valid;" + existingUser.id);
       } else {
         res.send("Password or Username incorrect");
       }
@@ -92,6 +99,22 @@ async function checkLogin(req, res) {
       res.send("Password or Username incorrect");
     }
   } catch (error) {
+    console.error("Error:", error);
+    res.status(500).send("Internal Server Error");
+  }
+}
+
+//inserts a new exercise with a user owner
+async function insertExercise(req, res) {
+  try {
+      const newEx = new ExModel({
+        name: req.body.Name,
+        ownerId: req.body.UserId,
+      });
+      await newEx.save();
+      res.send("Insert Succesfull");
+    }
+  catch (error) {
     console.error("Error:", error);
     res.status(500).send("Internal Server Error");
   }
@@ -105,6 +128,11 @@ app.post("/register", (req, res) => {
 app.post("/login", (req, res) => {
   console.log(req.body.Email);
   checkLogin(req, res);
+});
+
+app.post("/new_exercise", (req, res) => {
+  console.log(req.body.Email);
+  insertExercise(req, res);
 });
 
 const listener = app.listen(8888, function () {
