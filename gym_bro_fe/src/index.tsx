@@ -12,18 +12,18 @@ type Props = {}
 
 export default function Index({}: Props) {
 const [loggedIn, setLogged] = useState(false)
-
+const [userId, setUserId] = useState("")
 if (loggedIn){
   return(
     <React.StrictMode>
-      <App />
+      <App userId={userId}/>
     </React.StrictMode>
   );
 }
 else{
   return(
     <React.StrictMode>
-      <Login logedIn={setLogged}/>
+      <Login logedIn={setLogged} setUserId={setUserId}/>
     </React.StrictMode>
   );
 }

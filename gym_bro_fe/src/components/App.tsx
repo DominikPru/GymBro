@@ -4,9 +4,9 @@ import "./App.scss";
 import NewWorkout from "./NewWorkout";
 import ExCard from "./ExCard";
 import axios from "axios";
-type Props = {};
+type Props = {userId:string};
 
-export default function App({}: Props) {
+export default function App({ userId }: Props) {
   const [selectedTab, setTab] = useState(0);
   const [exMessage, setMessage] = useState("");
   const [exResponse, setResponse] = useState([]);
@@ -20,7 +20,7 @@ export default function App({}: Props) {
       <div className="containerr">
         <Sidebar selectedIndex={selectedTab} setIndex={setTab} />
         <div className="jc">
-          <h1>Home</h1>
+          <h1>Home, Current user id: {userId}</h1>
         </div>
       </div>
     );
@@ -36,7 +36,6 @@ export default function App({}: Props) {
           "X-RapidAPI-Host": "exercisedb.p.rapidapi.com",
         },
       };
-
       try {
         const response = await axios.request(options);
         console.log(response.data);
@@ -64,8 +63,8 @@ export default function App({}: Props) {
     <ExCard
       key={index}
       name={data.name}
-      targets={data.target}
       url={data.gifUrl}
+      userId={userId}
     />
   ))
 ) : (

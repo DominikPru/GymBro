@@ -2,9 +2,9 @@ import React, { useState, useEffect } from 'react'
 import "./Login.scss"
 import axios from 'axios'
 
-type Props = {logedIn: any}
+type Props = {logedIn: any, setUserId: any}
 
-export default function Login({logedIn}: Props) {
+export default function Login({logedIn, setUserId}: Props) {
   //stateHooks for register
   const [userName, setUserName] = useState('');
   const [userEmail, setUserEmail] = useState('');
@@ -29,7 +29,7 @@ async function register(){
   axios.post('http://localhost:8888/register', {
     Name: userName,
     Email: userEmail,
-    Pass: userPassword
+    Pass: userPassword,
   })
   .then((response) => {
     console.log(response.data);
@@ -47,11 +47,11 @@ async function login(){
   })
   .then((response) => {
     console.log(response.data);
-    if (response.data == "Auth Valid"){
+    if (response.data.includes("Auth Valid")){
+      setUserId(response.data.split(';')[1])
       logedIn(true)
     }
     setMessage(response.data)
-    
   })
   .catch((error) => {
     console.log(error);
