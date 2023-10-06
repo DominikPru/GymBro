@@ -77,15 +77,40 @@ export default function App({ userId }: Props) {
       </div>
     );
   } else if (selectedTab == 2) {
-    return (
-      <div className="containerr">
-        <Sidebar selectedIndex={selectedTab} setIndex={setTab} />
-        <div className="jc">
-          <ExPlanCard name="test dwadw dawd wad aw dwa " exId="s"/>
-        </div>
+
+      axios.post('http://localhost:8888/get_exerciese', {
+        userId: userId,
+      })
+      .then((response) => {
+        console.log(response.data);
+        return(
+          <div className="containerr">
+            <Sidebar selectedIndex={selectedTab} setIndex={setTab} />
+            <div className="jc">
+              {response.data.map((data: any, index: number) => (
+    <ExPlanCard
+      key={index}
+      name={data.name}
+      exId={data.exId}
+    />
+  ))}
+            
+            </div>
+          </div>
+        );
+      })
+      .catch((error) => {
+        console.log(error);
+      })
+
+      return <div className="containerr">
+      <Sidebar selectedIndex={selectedTab} setIndex={setTab} />
+      <div className="jc">
+      <h1>No Exercises Selected</h1>
       </div>
-    );
-  }
+      </div>
+    }
+      
   else if (selectedTab == 3) {
     return (
       <div className="containerr">
@@ -107,3 +132,5 @@ export default function App({ userId }: Props) {
     );
   }
 }
+
+
