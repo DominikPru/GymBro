@@ -78,8 +78,8 @@ export default function App({ userId }: Props) {
     );
   } else if (selectedTab == 2) {
 
-      axios.post('http://localhost:8888/get_exerciese', {
-        userId: userId,
+      axios.post('http://localhost:8888/get_exercise', {
+        UserId: userId,
       })
       .then((response) => {
         console.log(response.data);
@@ -91,10 +91,9 @@ export default function App({ userId }: Props) {
     <ExPlanCard
       key={index}
       name={data.name}
-      exId={data.exId}
+      exId={data._id}
     />
   ))}
-            
             </div>
           </div>
         );

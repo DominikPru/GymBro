@@ -29,10 +29,10 @@ width: 34rem;
   height: 100%;
 }
 .containerrr {
-  height: 100vh;
+  height: 100%;
   display: flex;
   flex-direction: column;
-  margin-top: 150px;
-  align-items: start;
+ justify-content: center;
+  align-items: flex-end;
   
 }

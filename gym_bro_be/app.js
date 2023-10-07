@@ -136,6 +136,18 @@ async function checkExercise(req, res) {
   }
 }
 
+//Gets all exercises that the user selected
+async function getExercise(req, res) {
+  try {
+    const existingEx = await ExModel.find({ ownerId: req.body.UserId});
+    res.send(existingEx);
+    }
+  catch (error) {
+    console.error("Error:", error);
+    res.status(500).send("Internal Server Error");
+  }
+}
+
 app.post("/register", (req, res) => {
   console.log(req.body.Email);
   insertRegister(req, res);
@@ -152,6 +164,10 @@ app.post("/new_exercise", (req, res) => {
 
 app.post("/check_exercise", (req, res) => {
   checkExercise(req, res);
+});
+
+app.post("/get_exercise", (req, res) => {
+  getExercise(req, res);
 });
 
 const listener = app.listen(8888, function () {
