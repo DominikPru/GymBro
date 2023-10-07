@@ -6,7 +6,7 @@ const cors = require("cors");
 const bcrypt = require("bcrypt");
 const saltRounds = 10;
 const uri =
-  "mongodb+srv://fancy:Kocicka123@gymbro.33d0low.mongodb.net/?retryWrites=true&w=majority";
+  "mongodb+srv://fancy:Kocicka123@gymbro.33d0low.mongodb.net/";
 const dbName = "Main";
 
 mongoose.connect(uri, {
@@ -30,7 +30,7 @@ const exSchema = new mongoose.Schema({
   ownerId: String,
 });
 
-// Create UserModel
+// Create Models
 const UserModel = mongoose.model("User", userSchema);
 
 const ExModel = mongoose.model("Exercise", exSchema);
@@ -90,7 +90,9 @@ async function checkLogin(req, res) {
     const existingUser = await UserModel.findOne({ email: req.body.Email });
 
     if (existingUser) {
-      if (await validateUser(existingUser.password, req.body.Pass)) {
+      const isPasswordValid = await validateUser(existingUser.password, req.body.Pass);
+
+      if (isPasswordValid) {
         res.send("Auth Valid;" + existingUser.id);
       } else {
         res.send("Password or Username incorrect");
@@ -99,7 +101,7 @@ async function checkLogin(req, res) {
       res.send("Password or Username incorrect");
     }
   } catch (error) {
-    console.error("Error:", error);
+    console.error("MongoDB Error:", error); // Log the MongoDB-specific error
     res.status(500).send("Internal Server Error");
   }
 }
