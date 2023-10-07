@@ -15,6 +15,7 @@ function exPlanCard({name, exId}: Props) {
 <div className="input-container">
   <input name="reps" type="number" placeholder='Reps' />
 </div>
+<span className="remove">X</span>
 </div>
   )
 }
