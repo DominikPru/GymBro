@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Sidebar from "./Sidebar";
 import "./App.scss";
 import NewWorkout from "./NewWorkout";
@@ -11,10 +11,31 @@ export default function App({ userId }: Props) {
   const [selectedTab, setTab] = useState(0);
   const [exMessage, setMessage] = useState("");
   const [exResponse, setResponse] = useState([]);
+  const [exPlanResponse, setExRespone] = useState([]);
 
   const handleChangeMessage = (event: { target: { value: any } }) => {
     setMessage(event.target.value);
   };
+
+  useEffect(() => {
+  GetUsersEx();
+  }, []);
+  
+
+  function GetUsersEx(){
+    axios.post('http://localhost:8888/get_exercise', {
+      UserId: userId,
+    })
+    .then((response) => {
+      console.log(response.data);
+      setExRespone(response.data);
+    })
+    .catch((error) => {
+      console.log(error);
+    })
+  
+  }
+
 
   if (selectedTab == 0) {
     return (
@@ -78,36 +99,27 @@ export default function App({ userId }: Props) {
     );
   } else if (selectedTab == 2) {
 
-      axios.post('http://localhost:8888/get_exercise', {
-        UserId: userId,
-      })
-      .then((response) => {
-        console.log(response.data);
-        return(
-          <div className="containerr">
-            <Sidebar selectedIndex={selectedTab} setIndex={setTab} />
-            <div className="jc">
-              {response.data.map((data: any, index: number) => (
-    <ExPlanCard
-      key={index}
-      name={data.name}
-      exId={data._id}
-    />
-  ))}
-            </div>
+    
+      return(
+        <div className="containerr">
+          <Sidebar selectedIndex={selectedTab} setIndex={setTab} />
+          <div className="jc">
+            {exPlanResponse ? (exPlanResponse.map((data: any, index: number) => (
+  <ExPlanCard
+    key={index}
+    name={data.name}
+    exId={data._id}
+    getUsersEx={GetUsersEx}
+  />
+)) 
+) : (
+  <p>No Exercises selected</p>
+)} 
+<i className="fa fa-refresh remove" aria-hidden="true" onClick={GetUsersEx}></i>
           </div>
-        );
-      })
-      .catch((error) => {
-        console.log(error);
-      })
+        </div>
+      );
 
-      return <div className="containerr">
-      <Sidebar selectedIndex={selectedTab} setIndex={setTab} />
-      <div className="jc">
-      <h1>No Exercises Selected</h1>
-      </div>
-      </div>
     }
       
   else if (selectedTab == 3) {

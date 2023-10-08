@@ -148,6 +148,18 @@ async function getExercise(req, res) {
   }
 }
 
+async function remExercise(req, res) {
+  try {  
+    const doc = await ExModel.findById(req.body._id)
+    doc.remove();
+    res.send("remove succesfull")
+    }
+  catch (error) {
+    console.error("Error:", error);
+    res.status(500).send("Internal Server Error");
+  }
+}
+
 app.post("/register", (req, res) => {
   console.log(req.body.Email);
   insertRegister(req, res);
@@ -168,6 +180,9 @@ app.post("/check_exercise", (req, res) => {
 
 app.post("/get_exercise", (req, res) => {
   getExercise(req, res);
+});
+app.post("/rem_exercise", (req, res) => {
+  remExercise(req, res);
 });
 
 const listener = app.listen(8888, function () {
