@@ -17,11 +17,9 @@ export default function App({ userId }: Props) {
     setMessage(event.target.value);
   };
 
-  useEffect(() => {
-  GetUsersEx();
-  }, []);
-  
 
+  
+  //Gets all selected exercises of the current user
   function GetUsersEx(){
     axios.post('http://localhost:8888/get_exercise', {
       UserId: userId,
@@ -36,7 +34,13 @@ export default function App({ userId }: Props) {
   
   }
 
+  useEffect(() => {
+    if (selectedTab === 2) {
+      GetUsersEx();
+    }
+  }, [selectedTab]);
 
+ //Home Tab
   if (selectedTab == 0) {
     return (
       <div className="containerr">
@@ -46,7 +50,11 @@ export default function App({ userId }: Props) {
         </div>
       </div>
     );
+
+  //Add Exercises Tab
   } else if (selectedTab == 1) {
+
+    //Calls the exercisedb to show 6 exercises that match the search string
     async function getExercices() {
       const options = {
         method: "GET",
@@ -66,7 +74,7 @@ export default function App({ userId }: Props) {
         console.error(error);
       }
       console.log(exMessage);
-      return <h1>test</h1>;
+      return <h1>error</h1>;
     }
 
     return (
@@ -97,6 +105,8 @@ export default function App({ userId }: Props) {
         </div>
       </div>
     );
+
+  //Exercise Plan Tab
   } else if (selectedTab == 2) {
 
     
@@ -104,17 +114,19 @@ export default function App({ userId }: Props) {
         <div className="containerr">
           <Sidebar selectedIndex={selectedTab} setIndex={setTab} />
           <div className="jc">
-            {exPlanResponse ? (exPlanResponse.map((data: any, index: number) => (
-  <ExPlanCard
-    key={index}
-    name={data.name}
-    exId={data._id}
-    getUsersEx={GetUsersEx}
-  />
-)) 
+            
+          {exPlanResponse && exPlanResponse.length > 0 ? (
+  exPlanResponse.map((data: any, index: number) => (
+    <ExPlanCard
+      key={index}
+      name={data.name}
+      exId={data._id}
+      getUsersEx={GetUsersEx}
+    />
+  ))
 ) : (
   <p>No Exercises selected</p>
-)} 
+)}
 <div className="SubmitFooter">
 <button className="button nomg dark_bg">Submit</button></div>
           </div>
@@ -122,7 +134,8 @@ export default function App({ userId }: Props) {
       );
 
     }
-      
+  
+  //Equipment Tab
   else if (selectedTab == 3) {
     return (
       <div className="containerr">
@@ -133,6 +146,8 @@ export default function App({ userId }: Props) {
       </div>
     );
   }
+
+  //History Tab
   else {
     return (
       <div className="containerr">

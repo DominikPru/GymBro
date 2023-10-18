@@ -8,8 +8,8 @@ function ExCard({ name, url, userId }: Props) {
 
 const[cardClass, changeClass] = useState("card")
 
+//Checks if this exercise has already been selected by the user
 useEffect(() => {
-
   axios.post('http://localhost:8888/check_exercise', {
     Name: name,
     UserId: userId,
@@ -25,9 +25,9 @@ useEffect(() => {
   .catch((error) => {
     console.log(error);
   })
-
 })
 
+//Inserts the selected exercise into the databse and adds a class to show the user the exercise has been succesfuly selected
   async function insertEx(){
     changeClass("card is-checked")
     if(cardClass == "card"){

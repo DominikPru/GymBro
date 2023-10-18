@@ -19,10 +19,13 @@
   .jcc {
     display: flex;
     justify-content: center;
-    align-items: start;
+    align-items: center;
     width: 100%;
+    flex-direction: column;
   }
-  .title_add{
+  .desc_add{
+    font-size: 12px;
+    font-weight: 300;
     margin-bottom: 10px;
   }
   .searchInputWrapper {
