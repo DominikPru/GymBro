@@ -4,7 +4,7 @@ import "./App.scss";
 import NewWorkout from "./NewWorkout";
 import ExCard from "./ExCard";
 import axios from "axios";
-import ExPlanCard from "./exPlanCard";
+import ExPlanCard from "./ExPlanCard";
 type Props = {userId:string};
 
 export default function App({ userId }: Props) {
@@ -115,7 +115,8 @@ export default function App({ userId }: Props) {
 ) : (
   <p>No Exercises selected</p>
 )} 
-<i className="fa fa-refresh remove" aria-hidden="true" onClick={GetUsersEx}></i>
+<div className="SubmitFooter">
+<button className="button nomg dark_bg">Submit</button></div>
           </div>
         </div>
       );
