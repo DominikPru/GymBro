@@ -18,11 +18,9 @@ export default function App({ userId }: Props) {
     setMessage(event.target.value);
   };
 
-
-  
   //Gets all selected exercises of the current user
   function GetUsersEx(){
-    axios.post('http://localhost:8888/get_exercise', {
+    axios.post('http://localhost:8888/get_all_exercise', {
       UserId: userId,
     })
     .then((response) => {
@@ -32,12 +30,11 @@ export default function App({ userId }: Props) {
     .catch((error) => {
       console.log(error);
     })
-  
   }
 
   useEffect(() => {
     if (selectedTab === 2) {
-      GetUsersEx();
+      GetUsersEx()
     }
   }, [selectedTab]);
 
@@ -110,17 +107,20 @@ export default function App({ userId }: Props) {
   //Exercise Plan Tab
   } else if (selectedTab == 2) {
 
+    //Handles all user changes in the order of exercises, adds them to the OrderList
     const handleOrderList = (index: number, data: number) => {
       const newOrderList = [...orderList];
       newOrderList[index] = data;
       setOrderList(newOrderList)
     }
     
+    //Checks if the order of exercises that the user selected is correct (ex. 1, 2, 3 is correct, 3, 3, 1 is not)
     function orderCorrect(){
       const noDups = new Set(orderList);
       return orderList.length == noDups.size;
     }
 
+    //Called on submiting the whole plan
     function exPlanSubmit() {
       if (orderCorrect()){
         console.log("Order Correct");
