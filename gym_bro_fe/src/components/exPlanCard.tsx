@@ -1,16 +1,15 @@
 import React, {useState} from 'react'
 import "./ExPlanCard.scss"
 import axios from 'axios'
-type Props = {name:string, exId:string, getUsersEx: any}
+type Props = {name:string, exId:string, getUsersEx: any, index: number, handleOrderList: any, max:number}
 
-function ExPlanCard({name, exId, getUsersEx}: Props) {
+function ExPlanCard({name, exId, getUsersEx, index, handleOrderList, max}: Props) {
 
-const[order, setOrder] = useState(0);
 const[sets, setSets] = useState(0);
 const[reps, setReps] = useState(0);
 
   const handleChangeOrder = (event: { target: { value: any } }) => {
-    setOrder(event.target.value);
+    handleOrderList(index, event.target.value)
   };
 
   const handleChangeSets = (event: { target: { value: any } }) => {
@@ -38,15 +37,13 @@ const[reps, setReps] = useState(0);
 
   async function changePlan(){
 
-
-
   }
 
   return (
     <div className='plan-card'>
-        <div className='name'>{name}</div>
+        <div className='name'>{name + " " + index}</div>
         <div className="input-container">
-  <input name="reps" type="number" placeholder='Order' onChange={handleChangeOrder}/>
+  <input name="reps" type="number" max={max} min={1} width={94.32} placeholder='Order' onChange={handleChangeOrder}/>
 </div>
     <div className="input-container">
   <input name="sets" type="number" placeholder='Sets' onChange={handleChangeSets}/>

@@ -12,6 +12,7 @@ export default function App({ userId }: Props) {
   const [exMessage, setMessage] = useState("");
   const [exResponse, setResponse] = useState([]);
   const [exPlanResponse, setExRespone] = useState([]);
+  const [orderList, setOrderList] = useState([1, 2, 3, 4, 5, 6, 7, 8]); 
 
   const handleChangeMessage = (event: { target: { value: any } }) => {
     setMessage(event.target.value);
@@ -109,7 +110,25 @@ export default function App({ userId }: Props) {
   //Exercise Plan Tab
   } else if (selectedTab == 2) {
 
+    const handleOrderList = (index: number, data: number) => {
+      const newOrderList = [...orderList];
+      newOrderList[index] = data;
+      setOrderList(newOrderList)
+    }
     
+    function orderCorrect(){
+      const noDups = new Set(orderList);
+      return orderList.length == noDups.size;
+    }
+
+    function exPlanSubmit() {
+      if (orderCorrect()){
+        console.log("Order Correct");
+      }
+      else{
+        console.log("Order Incorect");
+      }
+    }
       return(
         <div className="containerr">
           <Sidebar selectedIndex={selectedTab} setIndex={setTab} />
@@ -122,13 +141,16 @@ export default function App({ userId }: Props) {
       name={data.name}
       exId={data._id}
       getUsersEx={GetUsersEx}
+      index={index}
+      handleOrderList={handleOrderList}
+      max={exPlanResponse.length}
     />
   ))
 ) : (
   <p>No Exercises selected</p>
 )}
 <div className="SubmitFooter">
-<button className="button nomg dark_bg">Submit</button></div>
+<button className="button nomg dark_bg" onClick={exPlanSubmit}>Submit</button></div>
           </div>
         </div>
       );
