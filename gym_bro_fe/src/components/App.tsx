@@ -1,21 +1,44 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Sidebar from "./Sidebar";
 import "./App.scss";
 import NewWorkout from "./NewWorkout";
 import ExCard from "./ExCard";
 import axios from "axios";
-import ExPlanCard from "./exPlanCard";
+import ExPlanCard from "./ExPlanCard";
 type Props = {userId:string};
 
 export default function App({ userId }: Props) {
   const [selectedTab, setTab] = useState(0);
   const [exMessage, setMessage] = useState("");
   const [exResponse, setResponse] = useState([]);
+  const [exPlanResponse, setExRespone] = useState([]);
+  const [orderList, setOrderList] = useState([1, 2, 3, 4, 5, 6, 7, 8]); 
 
   const handleChangeMessage = (event: { target: { value: any } }) => {
     setMessage(event.target.value);
   };
 
+  //Gets all selected exercises of the current user
+  function GetUsersEx(){
+    axios.post('http://localhost:8888/get_all_exercise', {
+      UserId: userId,
+    })
+    .then((response) => {
+      console.log(response.data);
+      setExRespone(response.data);
+    })
+    .catch((error) => {
+      console.log(error);
+    })
+  }
+
+  useEffect(() => {
+    if (selectedTab === 2) {
+      GetUsersEx()
+    }
+  }, [selectedTab]);
+
+ //Home Tab
   if (selectedTab == 0) {
     return (
       <div className="containerr">
@@ -25,7 +48,11 @@ export default function App({ userId }: Props) {
         </div>
       </div>
     );
+
+  //Add Exercises Tab
   } else if (selectedTab == 1) {
+
+    //Calls the exercisedb to show 6 exercises that match the search string
     async function getExercices() {
       const options = {
         method: "GET",
@@ -45,7 +72,7 @@ export default function App({ userId }: Props) {
         console.error(error);
       }
       console.log(exMessage);
-      return <h1>test</h1>;
+      return <h1>error</h1>;
     }
 
     return (
@@ -76,41 +103,61 @@ export default function App({ userId }: Props) {
         </div>
       </div>
     );
+
+  //Exercise Plan Tab
   } else if (selectedTab == 2) {
 
-      axios.post('http://localhost:8888/get_exerciese', {
-        userId: userId,
-      })
-      .then((response) => {
-        console.log(response.data);
-        return(
-          <div className="containerr">
-            <Sidebar selectedIndex={selectedTab} setIndex={setTab} />
-            <div className="jc">
-              {response.data.map((data: any, index: number) => (
+    //Handles all user changes in the order of exercises, adds them to the OrderList
+    const handleOrderList = (index: number, data: number) => {
+      const newOrderList = [...orderList];
+      newOrderList[index] = data;
+      setOrderList(newOrderList)
+    }
+    
+    //Checks if the order of exercises that the user selected is correct (ex. 1, 2, 3 is correct, 3, 3, 1 is not)
+    function orderCorrect(){
+      const noDups = new Set(orderList);
+      return orderList.length == noDups.size;
+    }
+
+    //Called on submiting the whole plan
+    function exPlanSubmit() {
+      if (orderCorrect()){
+        console.log("Order Correct");
+      }
+      else{
+        console.log("Order Incorect");
+      }
+    }
+      return(
+        <div className="containerr">
+          <Sidebar selectedIndex={selectedTab} setIndex={setTab} />
+          <div className="jc">
+            
+          {exPlanResponse && exPlanResponse.length > 0 ? (
+  exPlanResponse.map((data: any, index: number) => (
     <ExPlanCard
       key={index}
       name={data.name}
-      exId={data.exId}
+      exId={data._id}
+      getUsersEx={GetUsersEx}
+      index={index}
+      handleOrderList={handleOrderList}
+      max={exPlanResponse.length}
     />
-  ))}
-            
-            </div>
+  ))
+) : (
+  <p>No Exercises selected</p>
+)}
+<div className="SubmitFooter">
+<button className="button nomg dark_bg" onClick={exPlanSubmit}>Submit</button></div>
           </div>
-        );
-      })
-      .catch((error) => {
-        console.log(error);
-      })
+        </div>
+      );
 
-      return <div className="containerr">
-      <Sidebar selectedIndex={selectedTab} setIndex={setTab} />
-      <div className="jc">
-      <h1>No Exercises Selected</h1>
-      </div>
-      </div>
     }
-      
+  
+  //Equipment Tab
   else if (selectedTab == 3) {
     return (
       <div className="containerr">
@@ -121,6 +168,8 @@ export default function App({ userId }: Props) {
       </div>
     );
   }
+
+  //History Tab
   else {
     return (
       <div className="containerr">

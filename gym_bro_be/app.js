@@ -13,7 +13,12 @@ mongoose.connect(uri, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
   dbName: dbName, // Specify the database name here
+}).then(() => {
+  console.log("Db Connected");
+}).catch((err) => {
+  console.error("Error connecting to the database: ", err);
 });
+
 
 app.use(cors()); // Use this after the variable declaration
 app.use(bodyParser.json());
@@ -28,6 +33,9 @@ const userSchema = new mongoose.Schema({
 const exSchema = new mongoose.Schema({
   name: String,
   ownerId: String,
+  order: Number,
+  sets: Number,
+  reps: Number
 });
 
 // Create Models
@@ -106,23 +114,7 @@ async function checkLogin(req, res) {
   }
 }
 
-//inserts a new exercise with a user owner
-async function insertExercise(req, res) {
-  try {
-      const newEx = new ExModel({
-        name: req.body.Name,
-        ownerId: req.body.UserId,
-      });
-      await newEx.save();
-      res.send("Insert Succesfull");
-    }
-  catch (error) {
-    console.error("Error:", error);
-    res.status(500).send("Internal Server Error");
-  }
-}
-
-//Checks if a exercise is already selected by the user
+//Checks if an exercise is selected by the user
 async function checkExercise(req, res) {
   try {
     const existingEx = await ExModel.findOne({ ownerId: req.body.UserId, name: req.body.Name });
@@ -140,10 +132,60 @@ async function checkExercise(req, res) {
 }
 
 //Gets all exercises that the user selected
-async function getExercise(req, res) {
+async function getAllExercise(req, res) {
   try {
     const existingEx = await ExModel.find({ ownerId: req.body.UserId});
     res.send(existingEx);
+    }
+  catch (error) {
+    console.error("Error:", error);
+    res.status(500).send("Internal Server Error");
+  }
+}
+
+//inserts a new exercise with a user owner
+async function insertExercise(req, res) {
+  try {
+    const existingEx = await ExModel.find({ ownerId: req.body.UserId});
+    if (existingEx.length <= 8){
+      const newEx = new ExModel({
+        name: req.body.Name,
+        ownerId: req.body.UserId,
+        order: 0,
+        sets: 0,
+        reps: 0
+      });
+      await newEx.save();
+      res.send("Insert Succesfull");
+    }
+     else{
+      res.send("Exercise Capacity Reached")
+     }
+    }
+  catch (error) {
+    console.error("Error:", error);
+    res.status(500).send("Internal Server Error");
+  }
+}
+
+//Removes an exercise by ID
+async function remExercise(req, res) {
+  try {  
+    const doc = await ExModel.findById(req.body._id)
+    doc.remove();
+    res.send("remove succesfull")
+    }
+  catch (error) {
+    console.error("Error:", error);
+    res.status(500).send("Internal Server Error");
+  }
+}
+
+//Gets an exercise by ID
+async function getExercise(req, res) {
+  try {  
+    const doc = await ExModel.findById(req.body._id)
+    res.send(doc)
     }
   catch (error) {
     console.error("Error:", error);
@@ -167,6 +209,14 @@ app.post("/new_exercise", (req, res) => {
 
 app.post("/check_exercise", (req, res) => {
   checkExercise(req, res);
+});
+
+app.post("/get_all_exercise", (req, res) => {
+  getAllExercise(req, res);
+});
+
+app.post("/rem_exercise", (req, res) => {
+  remExercise(req, res);
 });
 
 app.post("/get_exercise", (req, res) => {

@@ -27,12 +27,39 @@ width: 34rem;
   align-items: center;
   width: 100%;
   height: 100%;
+  flex-direction: column;
 }
 .containerrr {
-  height: 100vh;
+  height: 100%;
   display: flex;
   flex-direction: column;
-  margin-top: 150px;
-  align-items: start;
+ justify-content: center;
+  align-items: flex-end;
   
 }
+.SubmitFooter{
+  display: flex;
+  justify-content: center;
+  flex-direction: row;
+ width: 35%; 
+ margin-top: 10px;
+}
+
+.mg10{
+  margin-top: 5px;
+}
+
+.nomg{
+  margin-top: 0px !important; 
+  
+}
+
+.dark_bg{
+  background: linear-gradient(90deg, #391938, #391938, #2D142C, #2d142c) !important;
+}
+.dark_bg:before{
+  background: linear-gradient(90deg, #391938, #391938, #2D142C, #2d142c) !important;
+}
+
+
+
