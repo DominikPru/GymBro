@@ -12,7 +12,7 @@ const dbName = "Main";
 mongoose.connect(uri, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
-  dbName: dbName, // Specify the database name here
+  dbName: dbName, //Specify the database name here
 }).then(() => {
   console.log("Db Connected");
 }).catch((err) => {
@@ -20,16 +20,17 @@ mongoose.connect(uri, {
 });
 
 
-app.use(cors()); // Use this after the variable declaration
+app.use(cors()); //Use this after the variable declaration
 app.use(bodyParser.json());
 
-// Schema for Users
+//Schema for Users
 const userSchema = new mongoose.Schema({
   email: String,
   password: String,
   username: String,
 });
 
+//Schema for Exercises
 const exSchema = new mongoose.Schema({
   name: String,
   ownerId: String,
@@ -38,7 +39,7 @@ const exSchema = new mongoose.Schema({
   reps: Number
 });
 
-// Create Models
+//Create Models
 const UserModel = mongoose.model("User", userSchema);
 
 const ExModel = mongoose.model("Exercise", exSchema);
@@ -53,7 +54,7 @@ async function hashPass(pass) {
     return hash;
   } catch (err) {
     console.error(err.message);
-    throw err; // Rethrow the error for handling elsewhere if needed
+    throw err; //Rethrow the error for handling elsewhere if needed
   }
 }
 
@@ -61,11 +62,11 @@ async function hashPass(pass) {
 async function validateUser(hash, pass) {
   try {
     const res = await bcrypt.compare(pass, hash);
-    console.log(res); // Should return true or false
+    console.log(res); //Should return true or false
     return res;
   } catch (err) {
     console.error(err.message);
-    throw err; // Rethrow the error for handling elsewhere if needed
+    throw err; //Rethrow the error for handling elsewhere if needed
   }
 }
 
@@ -172,8 +173,7 @@ async function insertExercise(req, res) {
 async function remExercise(req, res) {
   try {  
     const doc = await ExModel.findById(req.body._id)
-    doc.remove();
-    res.send("remove succesfull")
+    doc.remove()
     }
   catch (error) {
     console.error("Error:", error);
@@ -193,10 +193,15 @@ async function getExercise(req, res) {
   }
 }
 
+//Gets exercise by id, updates its data
 async function updateExercise(req, res) {
   try {  
     const doc = await ExModel.findById(req.body._id)
-    res.send(doc)
+    doc.sets = req.body.sets
+    doc.reps = req.body.reps
+    doc.order = req.body.order
+    await doc.save();
+    res.send("Update Succesfull")
     }
   catch (error) {
     console.error("Error:", error);

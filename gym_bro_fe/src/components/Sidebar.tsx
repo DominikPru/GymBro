@@ -14,27 +14,32 @@ function Sidebar({selectedIndex, setIndex}: Props) {
       </div>
     </div>
     <div className="main-menu">
-      <div onClick={() => {setIndex(0)}} className={selectedIndex == 0 ? "menu-item active" : "menu-item"}>
+    <div onClick={() => {setIndex(0)}} className={selectedIndex == 0 ? "menu-item active" : "menu-item"}>
         <a>
-          <i className="menu-icon fa fa-home"></i>
+          <i className="menu-icon fa fa-circle-info"></i>
         </a>
       </div>
       <div onClick={() => {setIndex(1)}} className={selectedIndex == 1 ? "menu-item active" : "menu-item"}>
         <a>
-          <i className="menu-icon fa fa-plus"></i>
+          <i className="menu-icon fa fa-play"></i>
         </a>
       </div>
       <div onClick={() => {setIndex(2)}} className={selectedIndex == 2 ? "menu-item active" : "menu-item"}>
         <a>
-          <i className="menu-icon fa fa-calendar"></i>
+          <i className="menu-icon fa fa-plus"></i>
         </a>
       </div>
       <div onClick={() => {setIndex(3)}} className={selectedIndex == 3 ? "menu-item active" : "menu-item"}>
         <a>
-          <i className="menu-icon fa fa-dumbbell"></i>
+          <i className="menu-icon fa fa-calendar"></i>
         </a>
       </div>
       <div onClick={() => {setIndex(4)}} className={selectedIndex == 4 ? "menu-item active" : "menu-item"}>
+        <a>
+          <i className="menu-icon fa fa-dumbbell"></i>
+        </a>
+      </div>
+      <div onClick={() => {setIndex(5)}} className={selectedIndex == 5 ? "menu-item active" : "menu-item"}>
         <a>
           <i className="menu-icon fa fa-clock-rotate-left"></i>
         </a>

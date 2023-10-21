@@ -15,7 +15,6 @@ useImperativeHandle(ref, () => ({
 
 useEffect(() => {
   getExData()
-  //console.log("loading...")
 }, [])
 
 const[order, setOrder] = useState(0);

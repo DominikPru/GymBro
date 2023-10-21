@@ -9,13 +9,14 @@ type Props = {userId:string};
 
 export default function App({ userId }: Props) {
   const [selectedTab, setTab] = useState(0);
-  const [exMessage, setMessage] = useState("");
+  const [exSearch, setSearch] = useState("");
   const [exResponse, setResponse] = useState([]);
   const [exPlanResponse, setExRespone] = useState([]);
   const [orderList, setOrderList] = useState([1, 2, 3, 4, 5, 6, 7, 8]); 
+  const [errMessage, setErrMessage] = useState("")
   const exPlanCardRefs = useRef<(exPlanCardRef | null)[]>([]);
-  const handleChangeMessage = (event: { target: { value: any } }) => {
-    setMessage(event.target.value);
+  const handleChangeSearch = (event: { target: { value: any } }) => {
+    setSearch(event.target.value);
   };
 
   //Gets all selected exercises of the current user
@@ -33,13 +34,24 @@ export default function App({ userId }: Props) {
   }
 
   useEffect(() => {
-    if (selectedTab === 2) {
+    if (selectedTab === 3) {
       GetUsersEx()
     }
   }, [selectedTab]);
 
- //Home Tab
+  //Info Tab
   if (selectedTab == 0) {
+    return (
+      <div className="containerr">
+        <Sidebar selectedIndex={selectedTab} setIndex={setTab} />
+        <div className="jc">
+          <h1>Info</h1>
+        </div>
+      </div>
+    );
+  }
+ //Home Tab
+  if (selectedTab == 1) {
     return (
       <div className="containerr">
         <Sidebar selectedIndex={selectedTab} setIndex={setTab} />
@@ -50,13 +62,13 @@ export default function App({ userId }: Props) {
     );
 
   //Add Exercises Tab
-  } else if (selectedTab == 1) {
+  } else if (selectedTab == 2) {
 
     //Calls the exercisedb to show 6 exercises that match the search string
     async function getExercices() {
       const options = {
         method: "GET",
-        url: "https://exercisedb.p.rapidapi.com/exercises/name/" + exMessage.toLowerCase(),
+        url: "https://exercisedb.p.rapidapi.com/exercises/name/" + exSearch.toLowerCase(),
         params: { limit: "6" },
         headers: {
           "X-RapidAPI-Key":
@@ -71,7 +83,7 @@ export default function App({ userId }: Props) {
       } catch (error) {
         console.error(error);
       }
-      console.log(exMessage);
+      console.log(exSearch);
       return <h1>error</h1>;
     }
 
@@ -83,7 +95,7 @@ export default function App({ userId }: Props) {
             <div className="containerrr">
               <NewWorkout
                 getExercices={getExercices}
-                handleChangeMessage={handleChangeMessage}
+                handleChangeMessage={handleChangeSearch}
               />
               <div className="exContainer">
               {exResponse ? (
@@ -105,12 +117,12 @@ export default function App({ userId }: Props) {
     );
 
   //Exercise Plan Tab
-  } else if (selectedTab == 2) {
+  } else if (selectedTab == 3) {
 
     //Handles all user changes in the order of exercises, adds them to the OrderList
-    const handleOrderList = (index: number, data: number) => {
+    const handleOrderList = (index: number, data: any) => {
       const newOrderList = [...orderList];
-      newOrderList[index] = data;
+      newOrderList[index] = parseInt(data);
       setOrderList(newOrderList)
     }
     
@@ -122,16 +134,19 @@ export default function App({ userId }: Props) {
 
     //Called on submiting the whole plan
     function exPlanSubmit() {
+      console.log(orderList)
       if (orderCorrect()){
-        console.log("Order corect");
+        console.log("Order correct");
         exPlanCardRefs.current.forEach((ref) => {
           if (ref) {
             ref.submitPlan();
           }
         });
+        setErrMessage("Submit Succesfull")
       }
       else{
-        console.log("Order Incorect");
+        console.log("Order Incorrect");
+        setErrMessage("Order Incorrect, Please Remove any Duplicates and Try Again")
       }
     }
 
@@ -140,6 +155,8 @@ export default function App({ userId }: Props) {
         <div className="containerr">
           <Sidebar selectedIndex={selectedTab} setIndex={setTab} />
           <div className="jc">
+          
+          <h5 className="input_title"><span className="mgr30">Order</span> <span className="mgr30">Sets</span> <span className="mgr30">Reps</span></h5>
           {exPlanResponse && exPlanResponse.length > 0 ? (
   exPlanResponse.map((data: any, index: number) => (
     <ExPlanCard
@@ -156,7 +173,9 @@ export default function App({ userId }: Props) {
 ) : (
   <p>No Exercises selected</p>
 )}
+<h5>{errMessage}</h5>
 <div className="SubmitFooter">
+
 <button className="button nomg dark_bg" onClick={exPlanSubmit}>Submit</button></div>
           </div>
         </div>
@@ -165,12 +184,13 @@ export default function App({ userId }: Props) {
     }
   
   //Equipment Tab
-  else if (selectedTab == 3) {
+  else if (selectedTab == 4) {
     return (
       <div className="containerr">
         <Sidebar selectedIndex={selectedTab} setIndex={setTab} />
         <div className="jc">
           <h1>Equipment</h1>
+          <h5>todo</h5>
         </div>
       </div>
     );
@@ -183,6 +203,7 @@ export default function App({ userId }: Props) {
         <Sidebar selectedIndex={selectedTab} setIndex={setTab} />
         <div className="jc">
           <h1>History</h1>
+          <h5>todo</h5>
         </div>
       </div>
     );
