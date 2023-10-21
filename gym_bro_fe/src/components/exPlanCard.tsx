@@ -1,9 +1,17 @@
-import React, {useState, useEffect} from 'react'
+import React, {useState, useEffect, forwardRef, useImperativeHandle, Ref} from 'react'
 import "./ExPlanCard.scss"
 import axios from 'axios'
 type Props = {name:string, exId:string, getUsersEx: any, index: number, handleOrderList: any, max:number}
 
-function ExPlanCard({name, exId, getUsersEx, index, handleOrderList, max}: Props) {
+export type exPlanCardRef = {
+  submitPlan: () => void;
+}
+
+function ExPlanCard({name, exId, getUsersEx, index, handleOrderList, max}: Props, ref: Ref<exPlanCardRef>) {
+
+useImperativeHandle(ref, () => ({
+ submitPlan
+}))
 
 useEffect(() => {
   getExData()
@@ -13,6 +21,23 @@ useEffect(() => {
 const[order, setOrder] = useState(0);
 const[sets, setSets] = useState(0);
 const[reps, setReps] = useState(0);
+
+  //Gets called on submit, adds all the user selected values into db
+  function submitPlan(){
+    axios.post('http://localhost:8888/update_exercise', {
+      _id: exId,
+      order: order,
+      sets: sets,
+      reps: reps
+      }
+      )
+      .then((response) => {
+        console.log(response)
+      })
+      .catch((error) => {
+        console.log(error);
+      });  
+    }
 
   const handleChangeOrder = (event: { target: { value: any } }) => {
     handleOrderList(index, event.target.value)
@@ -58,10 +83,7 @@ const[reps, setReps] = useState(0);
       })
   }
 
-  //Gets called on submit, adds all the user selected values into db
-  async function changePlan(){
 
-  }
 
   return (
     <div className='plan-card'>
@@ -80,4 +102,4 @@ const[reps, setReps] = useState(0);
   )
 }
 
-export default ExPlanCard
+export default forwardRef(ExPlanCard) 

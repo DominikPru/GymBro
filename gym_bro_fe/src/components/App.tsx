@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef} from "react";
 import Sidebar from "./Sidebar";
 import "./App.scss";
 import NewWorkout from "./NewWorkout";
 import ExCard from "./ExCard";
 import axios from "axios";
-import ExPlanCard from "./ExPlanCard";
+import ExPlanCard, { exPlanCardRef } from "./ExPlanCard";
 type Props = {userId:string};
 
 export default function App({ userId }: Props) {
@@ -13,7 +13,7 @@ export default function App({ userId }: Props) {
   const [exResponse, setResponse] = useState([]);
   const [exPlanResponse, setExRespone] = useState([]);
   const [orderList, setOrderList] = useState([1, 2, 3, 4, 5, 6, 7, 8]); 
-
+  const exPlanCardRefs = useRef<(exPlanCardRef | null)[]>([]);
   const handleChangeMessage = (event: { target: { value: any } }) => {
     setMessage(event.target.value);
   };
@@ -123,17 +123,23 @@ export default function App({ userId }: Props) {
     //Called on submiting the whole plan
     function exPlanSubmit() {
       if (orderCorrect()){
-        console.log("Order Correct");
+        console.log("Order corect");
+        exPlanCardRefs.current.forEach((ref) => {
+          if (ref) {
+            ref.submitPlan();
+          }
+        });
       }
       else{
         console.log("Order Incorect");
       }
     }
+
+
       return(
         <div className="containerr">
           <Sidebar selectedIndex={selectedTab} setIndex={setTab} />
           <div className="jc">
-            
           {exPlanResponse && exPlanResponse.length > 0 ? (
   exPlanResponse.map((data: any, index: number) => (
     <ExPlanCard
@@ -143,7 +149,8 @@ export default function App({ userId }: Props) {
       getUsersEx={GetUsersEx}
       index={index}
       handleOrderList={handleOrderList}
-      max={exPlanResponse.length}
+      max={exPlanResponse.length} 
+      ref={(ref) => (exPlanCardRefs.current[index] = ref)}
     />
   ))
 ) : (
