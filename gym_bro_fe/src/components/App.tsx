@@ -11,7 +11,8 @@ export default function App({ userId }: Props) {
   const [selectedTab, setTab] = useState(0);
   const [exSearch, setSearch] = useState("");
   const [exResponse, setResponse] = useState([]);
-  const [exPlanResponse, setExRespone] = useState([]);
+  const [exPlanResponse, setExResponse] = useState([]);
+  const [exResponseSorted, setExResponseSorted] = useState([]);
   const [orderList, setOrderList] = useState([1, 2, 3, 4, 5, 6, 7, 8]); 
   const [errMessage, setErrMessage] = useState("")
   const exPlanCardRefs = useRef<(exPlanCardRef | null)[]>([]);
@@ -26,7 +27,11 @@ export default function App({ userId }: Props) {
     })
     .then((response) => {
       console.log(response.data);
-      setExRespone(response.data);
+      setExResponse(response.data);
+      setExResponseSorted(response.data);
+      exResponseSorted.sort(function(a: any, b: any) {
+        return parseFloat(a.order) - parseFloat(b.order);
+    });
     })
     .catch((error) => {
       console.log(error);
@@ -34,7 +39,7 @@ export default function App({ userId }: Props) {
   }
 
   useEffect(() => {
-    if (selectedTab === 3) {
+    if (selectedTab === 3 || selectedTab === 1) {
       GetUsersEx()
     }
   }, [selectedTab]);
@@ -52,6 +57,7 @@ export default function App({ userId }: Props) {
   }
  //Home Tab
   if (selectedTab == 1) {
+
     return (
       <div className="containerr">
         <Sidebar selectedIndex={selectedTab} setIndex={setTab} />

@@ -154,7 +154,8 @@ async function insertExercise(req, res) {
         ownerId: req.body.UserId,
         order: 0,
         sets: 0,
-        reps: 0
+        reps: 0,
+        url: req.body.Url
       });
       await newEx.save();
       res.send("Insert Succesfull");

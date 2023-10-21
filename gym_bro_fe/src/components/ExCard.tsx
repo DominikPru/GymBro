@@ -13,6 +13,7 @@ useEffect(() => {
   axios.post('http://localhost:8888/check_exercise', {
     Name: name,
     UserId: userId,
+    Url: url
   })
   .then((response) => {
     if (response.data == "Selected"){
