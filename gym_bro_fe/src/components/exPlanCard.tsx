@@ -1,13 +1,13 @@
 import React, {useState, useEffect, forwardRef, useImperativeHandle, Ref} from 'react'
 import "./ExPlanCard.scss"
 import axios from 'axios'
-type Props = {name:string, exId:string, getUsersEx: any, index: number, handleOrderList: any, max:number}
+type Props = {name:string, exId:string, getUsersEx: any, index: number, handleOrderList: any, max:number, userId: string}
 
 export type exPlanCardRef = {
   submitPlan: () => void;
 }
 
-function ExPlanCard({name, exId, getUsersEx, index, handleOrderList, max}: Props, ref: Ref<exPlanCardRef>) {
+function ExPlanCard({name, exId, getUsersEx, index, handleOrderList, max, userId}: Props, ref: Ref<exPlanCardRef>) {
 
 useImperativeHandle(ref, () => ({
  submitPlan
@@ -55,15 +55,18 @@ const[reps, setReps] = useState(0);
   async function remEx(){
     axios.post('http://localhost:8888/rem_exercise', {
     _id: exId,
+    UserId: userId
     }
     )
     .then((response) => {
-      //getUsersEx refreshes the data shown after deletion
-      getUsersEx()
+      console.log(response);
+    //getUsersEx refreshes the data shown after deletion
+    getUsersEx()
     })
     .catch((error) => {
-      console.log(error);
+      console.log("Error occurred during axios request:", error);
     })
+    
   }
 
   //gets the current data (Sets, Reps, Order) of this exercise, called on tab change (handleLoad)

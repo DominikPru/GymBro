@@ -36,7 +36,8 @@ const exSchema = new mongoose.Schema({
   ownerId: String,
   order: Number,
   sets: Number,
-  reps: Number
+  reps: Number,
+  url: String
 });
 
 //Create Models
@@ -173,10 +174,20 @@ async function insertExercise(req, res) {
 //Removes an exercise by ID
 async function remExercise(req, res) {
   try {  
-    const doc = await ExModel.findById(req.body._id)
-    doc.remove()
+    const doc = await ExModel.findById(req.body._id);
+    if (!doc) {
+      return res.status(404).send("Exercise not found");
     }
-  catch (error) {
+    await ExModel.deleteOne({ _id: req.body._id });
+
+    const existingEx = await ExModel.find({ ownerId: req.body.UserId});
+    existingEx.forEach(async (e) => {
+      e.order = 0;
+      await e.save();
+    });
+
+    res.status(200).send("Exercise removed successfully");
+  } catch (error) {
     console.error("Error:", error);
     res.status(500).send("Internal Server Error");
   }

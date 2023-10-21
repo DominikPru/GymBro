@@ -35,6 +35,7 @@ useEffect(() => {
     axios.post('http://localhost:8888/new_exercise', {
       Name: name,
       UserId: userId,
+      Url: url
     })
     .then((response) => {
       console.log(response.data);

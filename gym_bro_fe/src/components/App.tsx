@@ -1,10 +1,11 @@
-import React, { useState, useEffect, useRef} from "react";
+import React, { useState, useEffect, useRef, useReducer} from "react";
 import Sidebar from "./Sidebar";
 import "./App.scss";
 import NewWorkout from "./NewWorkout";
 import ExCard from "./ExCard";
 import axios from "axios";
 import ExPlanCard, { exPlanCardRef } from "./ExPlanCard";
+import ExerciseDisplay from "./ExerciseDisplay";
 type Props = {userId:string};
 
 export default function App({ userId }: Props) {
@@ -12,16 +13,18 @@ export default function App({ userId }: Props) {
   const [exSearch, setSearch] = useState("");
   const [exResponse, setResponse] = useState([]);
   const [exPlanResponse, setExResponse] = useState([]);
-  const [exResponseSorted, setExResponseSorted] = useState([]);
+  const [exResponseSorted, setExResponseSorted] = useState<any>([]);
   const [orderList, setOrderList] = useState([1, 2, 3, 4, 5, 6, 7, 8]); 
+  const [currentExx, setCurrentExx] = useState(0);
   const [errMessage, setErrMessage] = useState("")
+  const [exLoaded, setExLoaded] = useState(false)
   const exPlanCardRefs = useRef<(exPlanCardRef | null)[]>([]);
   const handleChangeSearch = (event: { target: { value: any } }) => {
     setSearch(event.target.value);
   };
 
   //Gets all selected exercises of the current user
-  function GetUsersEx(){
+  async function GetUsersEx(){
     axios.post('http://localhost:8888/get_all_exercise', {
       UserId: userId,
     })
@@ -29,20 +32,27 @@ export default function App({ userId }: Props) {
       console.log(response.data);
       setExResponse(response.data);
       setExResponseSorted(response.data);
-      exResponseSorted.sort(function(a: any, b: any) {
-        return parseFloat(a.order) - parseFloat(b.order);
-    });
+      setExLoaded(true)
     })
     .catch((error) => {
       console.log(error);
     })
   }
 
+
   useEffect(() => {
     if (selectedTab === 3 || selectedTab === 1) {
       GetUsersEx()
     }
   }, [selectedTab]);
+
+  useEffect(() => {
+    exResponseSorted.sort(function(a: any, b: any) {
+      return parseFloat(a.order) - parseFloat(b.order);
+    });
+    console.log("Sorted: " + exResponseSorted)
+    console.log("Current ex: " + currentExx)
+  }, [exLoaded])
 
   //Info Tab
   if (selectedTab == 0) {
@@ -55,17 +65,48 @@ export default function App({ userId }: Props) {
       </div>
     );
   }
+
+  function nxtEx(){
+    console.log("next")
+    if(currentExx <= exResponseSorted.length -2)
+      setCurrentExx(currentExx +1)
+  }
+
+  function prvEx(){
+    if(currentExx >= 1)
+      setCurrentExx(currentExx -1)
+  }
+
  //Home Tab
   if (selectedTab == 1) {
 
+    if (exLoaded){
     return (
       <div className="containerr">
         <Sidebar selectedIndex={selectedTab} setIndex={setTab} />
         <div className="jc">
-          <h1>Home, Current user id: {userId}</h1>
+          <h3>Current Exercise: {currentExx + 1}/{exResponseSorted.length}</h3>
+          <ExerciseDisplay
+          url={exResponseSorted[currentExx]?.url}
+          name={exResponseSorted[currentExx]?.name}
+          sets={exResponseSorted[currentExx]?.sets}
+          reps={exResponseSorted[currentExx]?.reps}
+          nxtEx={nxtEx}
+          prvEx={prvEx}
+          />
         </div>
       </div>
-    );
+    );}
+    else {
+      return (
+        <div className="containerr">
+          <Sidebar selectedIndex={selectedTab} setIndex={setTab} />
+          <div className="jc">
+            Exercise Loading...
+          </div>
+        </div>
+      );
+    }
 
   //Add Exercises Tab
   } else if (selectedTab == 2) {
@@ -149,6 +190,7 @@ export default function App({ userId }: Props) {
           }
         });
         setErrMessage("Submit Succesfull")
+        setExLoaded(false)
       }
       else{
         console.log("Order Incorrect");
@@ -161,9 +203,10 @@ export default function App({ userId }: Props) {
         <div className="containerr">
           <Sidebar selectedIndex={selectedTab} setIndex={setTab} />
           <div className="jc">
-          
-          <h5 className="input_title"><span className="mgr30">Order</span> <span className="mgr30">Sets</span> <span className="mgr30">Reps</span></h5>
-          {exPlanResponse && exPlanResponse.length > 0 ? (
+
+          {exPlanResponse && exPlanResponse.length > 0 ?
+          (<h5 className="input_title"><span className="mgr30">Order</span> <span className="mgr30">Sets</span> <span className="mgr30">Reps</span></h5>) : (<div></div>)}                
+          {exPlanResponse && exPlanResponse.length > 0 ? ( 
   exPlanResponse.map((data: any, index: number) => (
     <ExPlanCard
       key={index}
@@ -174,6 +217,7 @@ export default function App({ userId }: Props) {
       handleOrderList={handleOrderList}
       max={exPlanResponse.length} 
       ref={(ref) => (exPlanCardRefs.current[index] = ref)}
+      userId={userId}
     />
   ))
 ) : (
@@ -181,7 +225,6 @@ export default function App({ userId }: Props) {
 )}
 <h5>{errMessage}</h5>
 <div className="SubmitFooter">
-
 <button className="button nomg dark_bg" onClick={exPlanSubmit}>Submit</button></div>
           </div>
         </div>
