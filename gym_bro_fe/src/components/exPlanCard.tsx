@@ -17,6 +17,10 @@ useEffect(() => {
   getExData()
 }, [])
 
+useEffect(() => {
+  getExData()
+}, [max])
+
 const[order, setOrder] = useState(0);
 const[sets, setSets] = useState(0);
 const[reps, setReps] = useState(0);
@@ -60,6 +64,7 @@ const[reps, setReps] = useState(0);
     )
     .then((response) => {
       console.log(response);
+      
     //getUsersEx refreshes the data shown after deletion
     getUsersEx()
     })

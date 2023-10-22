@@ -24,21 +24,34 @@ export default function App({ userId }: Props) {
   };
 
   //Gets all selected exercises of the current user
-  async function GetUsersEx(){
-    axios.post('http://localhost:8888/get_all_exercise', {
-      UserId: userId,
-    })
-    .then((response) => {
-      console.log(response.data);
-      setExResponse(response.data);
-      setExResponseSorted(response.data);
-      setExLoaded(true)
-    })
-    .catch((error) => {
-      console.log(error);
-    })
-  }
+  async function GetUsersEx() {
+    try {
+      const response = await axios.post('http://localhost:8888/get_all_exercise', {
+        UserId: userId,
+      });
+  
+      const responseData = response.data;
+      setExResponse(responseData);
+      const sortedResponse = [...responseData];
+      sortedResponse.sort(function(a, b) {
+        return parseFloat(a.order) - parseFloat(b.order);
+      });
+      console.log("Sorted: " + sortedResponse[currentExx].order);
+      console.log("Current ex: " + currentExx);
+      setCurrentExx(0);
+      setExResponseSorted(sortedResponse);
+      setExLoaded(true);
 
+      sortedResponse.forEach(e => {
+        if (e.order == 0){
+          setExLoaded(false);
+        }
+      });
+
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
   useEffect(() => {
     if (selectedTab === 3 || selectedTab === 1) {
@@ -46,21 +59,30 @@ export default function App({ userId }: Props) {
     }
   }, [selectedTab]);
 
-  useEffect(() => {
-    exResponseSorted.sort(function(a: any, b: any) {
-      return parseFloat(a.order) - parseFloat(b.order);
-    });
-    console.log("Sorted: " + exResponseSorted)
-    console.log("Current ex: " + currentExx)
-  }, [exLoaded])
-
   //Info Tab
   if (selectedTab == 0) {
     return (
       <div className="containerr">
         <Sidebar selectedIndex={selectedTab} setIndex={setTab} />
         <div className="jc">
-          <h1>Info</h1>
+        <i className="menu-icon fa fa-play mgbtm"></i>
+        Go through the exercises in your plan, see the correct form as a gif and check your sets / reps.
+        <br></br>
+        <br></br>
+        <i className="menu-icon fa fa-plus mgbtm"></i>
+        Add new exercises to you plan using the search bar.
+        <br></br>
+        <br></br>
+        <i className="menu-icon fa fa-calendar mgbtm"></i>
+        Change your exercise plan, edit the ammount of sets / reps you do per exercise, change your exercise order, remove exercises from your plan.
+        <br></br>
+        <br></br>
+        <i className="menu-icon fa fa-dumbbell mgbtm"></i>
+        Add your equipment, will be checked when looking for new exercises (todo)
+        <br></br>
+        <br></br>
+        <i className="menu-icon fa fa-clock-rotate-left mgbtm"></i>
+        Check your exercise history (todo)
         </div>
       </div>
     );
@@ -81,6 +103,7 @@ export default function App({ userId }: Props) {
   if (selectedTab == 1) {
 
     if (exLoaded){
+      if (exResponseSorted[currentExx]?.url){
     return (
       <div className="containerr">
         <Sidebar selectedIndex={selectedTab} setIndex={setTab} />
@@ -97,12 +120,22 @@ export default function App({ userId }: Props) {
         </div>
       </div>
     );}
+      else{
+        return (
+        <div className="containerr">
+          <Sidebar selectedIndex={selectedTab} setIndex={setTab} />
+          <div className="jc">
+            No Exercises Selected, to start, search for an exercise in the "Add Exercise" tab.
+          </div>
+        </div>
+      );}
+  }
     else {
       return (
         <div className="containerr">
           <Sidebar selectedIndex={selectedTab} setIndex={setTab} />
           <div className="jc">
-            Exercise Loading...
+            Exercise Order cannot contain zeroes / Exercise Loading
           </div>
         </div>
       );
