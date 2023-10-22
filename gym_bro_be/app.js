@@ -6,7 +6,7 @@ const cors = require("cors");
 const bcrypt = require("bcrypt");
 const saltRounds = 10;
 const uri =
-  "mongodb+srv://fancy:Kocicka123@gymbro.33d0low.mongodb.net/";
+  "Connection String";
 const dbName = "Main";
 
 mongoose.connect(uri, {
