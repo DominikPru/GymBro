@@ -26,7 +26,7 @@ export default function Login({logedIn, setUserId}: Props) {
 
   //register the user, happenes after button click
 async function register(){
-  axios.post('http://localhost:8888/register', {
+  axios.post('https://gymbrobe.onrender.com/register', {
     Name: userName,
     Email: userEmail,
     Pass: userPassword,
@@ -41,7 +41,7 @@ async function register(){
 }
 
 async function login(){
-  axios.post('http://localhost:8888/login', {
+  axios.post('https://gymbrobe.onrender.com/login', {
     Email: userEmail,
     Pass: userPassword
   })
