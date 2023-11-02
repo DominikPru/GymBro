@@ -5,20 +5,21 @@ const bodyParser = require("body-parser");
 const cors = require("cors");
 const bcrypt = require("bcrypt");
 const saltRounds = 10;
-const uri =
-  "Connection String";
+const uri = "";
 const dbName = "Main";
 
-mongoose.connect(uri, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-  dbName: dbName, //Specify the database name here
-}).then(() => {
-  console.log("Db Connected");
-}).catch((err) => {
-  console.error("Error connecting to the database: ", err);
-});
-
+mongoose
+  .connect(uri, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+    dbName: dbName, //Specify the database name here
+  })
+  .then(() => {
+    console.log("Db Connected");
+  })
+  .catch((err) => {
+    console.error("Error connecting to the database: ", err);
+  });
 
 app.use(cors()); //Use this after the variable declaration
 app.use(bodyParser.json());
@@ -37,7 +38,7 @@ const exSchema = new mongoose.Schema({
   order: Number,
   sets: Number,
   reps: Number,
-  url: String
+  url: String,
 });
 
 //Create Models
@@ -79,6 +80,8 @@ async function insertRegister(req, res) {
 
     if (existingUser || existingName) {
       res.send("Email or Username Already Registered");
+    } else if (req.body.Email == "" || req.body.Name == "") {
+      res.send("Email or Username Cant be Empty");
     } else {
       const regUser = new UserModel({
         email: req.body.Email,
@@ -100,7 +103,10 @@ async function checkLogin(req, res) {
     const existingUser = await UserModel.findOne({ email: req.body.Email });
 
     if (existingUser) {
-      const isPasswordValid = await validateUser(existingUser.password, req.body.Pass);
+      const isPasswordValid = await validateUser(
+        existingUser.password,
+        req.body.Pass
+      );
 
       if (isPasswordValid) {
         res.send("Auth Valid;" + existingUser.id);
@@ -119,15 +125,16 @@ async function checkLogin(req, res) {
 //Checks if an exercise is selected by the user
 async function checkExercise(req, res) {
   try {
-    const existingEx = await ExModel.findOne({ ownerId: req.body.UserId, name: req.body.Name });
-    if (existingEx){
-      res.send("Selected")
+    const existingEx = await ExModel.findOne({
+      ownerId: req.body.UserId,
+      name: req.body.Name,
+    });
+    if (existingEx) {
+      res.send("Selected");
+    } else {
+      res.send("Free");
     }
-    else {
-      res.send("Free")
-    }
-    }
-  catch (error) {
+  } catch (error) {
     console.error("Error:", error);
     res.status(500).send("Internal Server Error");
   }
@@ -136,10 +143,9 @@ async function checkExercise(req, res) {
 //Gets all exercises that the user selected
 async function getAllExercise(req, res) {
   try {
-    const existingEx = await ExModel.find({ ownerId: req.body.UserId});
+    const existingEx = await ExModel.find({ ownerId: req.body.UserId });
     res.send(existingEx);
-    }
-  catch (error) {
+  } catch (error) {
     console.error("Error:", error);
     res.status(500).send("Internal Server Error");
   }
@@ -148,24 +154,22 @@ async function getAllExercise(req, res) {
 //inserts a new exercise with a user owner
 async function insertExercise(req, res) {
   try {
-    const existingEx = await ExModel.find({ ownerId: req.body.UserId});
-    if (existingEx.length <= 8){
+    const existingEx = await ExModel.find({ ownerId: req.body.UserId });
+    if (existingEx.length <= 8) {
       const newEx = new ExModel({
         name: req.body.Name,
         ownerId: req.body.UserId,
         order: 0,
         sets: 0,
         reps: 0,
-        url: req.body.Url
+        url: req.body.Url,
       });
       await newEx.save();
       res.send("Insert Succesfull");
+    } else {
+      res.send("Exercise Capacity Reached");
     }
-     else{
-      res.send("Exercise Capacity Reached")
-     }
-    }
-  catch (error) {
+  } catch (error) {
     console.error("Error:", error);
     res.status(500).send("Internal Server Error");
   }
@@ -173,14 +177,14 @@ async function insertExercise(req, res) {
 
 //Removes an exercise by ID
 async function remExercise(req, res) {
-  try {  
+  try {
     const doc = await ExModel.findById(req.body._id);
     if (!doc) {
       return res.status(404).send("Exercise not found");
     }
     await ExModel.deleteOne({ _id: req.body._id });
 
-    const existingEx = await ExModel.find({ ownerId: req.body.UserId});
+    const existingEx = await ExModel.find({ ownerId: req.body.UserId });
     existingEx.forEach(async (e) => {
       e.order = 0;
       await e.save();
@@ -195,11 +199,10 @@ async function remExercise(req, res) {
 
 //Gets an exercise by ID
 async function getExercise(req, res) {
-  try {  
-    const doc = await ExModel.findById(req.body._id)
-    res.send(doc)
-    }
-  catch (error) {
+  try {
+    const doc = await ExModel.findById(req.body._id);
+    res.send(doc);
+  } catch (error) {
     console.error("Error:", error);
     res.status(500).send("Internal Server Error");
   }
@@ -207,15 +210,14 @@ async function getExercise(req, res) {
 
 //Gets exercise by id, updates its data
 async function updateExercise(req, res) {
-  try {  
-    const doc = await ExModel.findById(req.body._id)
-    doc.sets = req.body.sets
-    doc.reps = req.body.reps
-    doc.order = req.body.order
+  try {
+    const doc = await ExModel.findById(req.body._id);
+    doc.sets = req.body.sets;
+    doc.reps = req.body.reps;
+    doc.order = req.body.order;
     await doc.save();
-    res.send("Update Succesfull")
-    }
-  catch (error) {
+    res.send("Update Succesfull");
+  } catch (error) {
     console.error("Error:", error);
     res.status(500).send("Internal Server Error");
   }
@@ -253,6 +255,10 @@ app.post("/get_exercise", (req, res) => {
 
 app.post("/update_exercise", (req, res) => {
   updateExercise(req, res);
+});
+
+app.post("/handshake", (req, res) => {
+  console.log("Handshake recieved");
 });
 
 const listener = app.listen(8888, function () {
