@@ -1,81 +1,95 @@
 /* Quick and dirty normalize hax */
- 
-.newWrapper{
+
+.newWrapper {
   width: 100%;
 }
 
-.button{
-    color: white;
-    width: 100px;
-    height: 30px;
+.button {
+  color: white;
+  width: 100px;
+  height: 30px;
   margin-top: 25px;
-    font-size: 14px;
-    font-family: "Nunito", sans-serif;
+  font-size: 14px;
+  font-family: "Nunito", sans-serif;
 }
 .heading {
-    margin-bottom: 1.5rem;
-    font-size: 1.2rem;
-  }
-  .jcc {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-    flex-direction: column;
-  }
-  .desc_add{
-    font-size: 12px;
-    font-weight: 300;
-    margin-bottom: 10px;
-  }
-  .searchInputWrapper {
-    position: relative;
-    
-  }
-  
+  margin-bottom: 1.5rem;
+  font-size: 1.2rem;
+}
+.jcc {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  flex-direction: column;
+}
+.desc_add {
+  font-size: 12px;
+  font-weight: 300;
+  margin-bottom: 10px;
+}
+.searchInputWrapper {
+  position: relative;
+}
+
+.searchInput {
+  width: 30rem;
+  height: 2rem;
+  padding: 0 1rem;
+  border-radius: 2rem;
+  border: none;
+  transition: transform 0.1s ease-in-out;
+  margin-bottom: 100px;
+}
+
+::placeholder {
+  color: #5e5e5e;
+}
+
+/* hide the placeholder text on focus */
+:focus::placeholder {
+  text-indent: -999px;
+}
+
+.searchInput:focus {
+  outline: none;
+  transform: scale(1.1);
+  transition: all 0.1s ease-in-out;
+}
+
+.searchInputIcon {
+  position: absolute;
+  right: 0.8rem;
+  top: 1rem;
+  color: #a1a1a1;
+  transition: all 0.1s ease-in-out;
+}
+.reset {
+  all: unset;
+}
+.searchInputIcon:hover {
+  cursor: pointer;
+}
+.fullWidth {
+  display: flex;
+  justify-content: center;
+}
+.searchInputWrapper:focus-within > .reset > .searchInputIcon {
+  right: -0.2rem;
+}
+
+@media only screen and (max-width: 767px) {
   .searchInput {
-    width: 30rem;
+    width: 18rem;
     height: 2rem;
-    padding: 0 1rem; 
+    padding: 0 1rem;
     border-radius: 2rem;
     border: none;
     transition: transform 0.1s ease-in-out;
     margin-bottom: 100px;
   }
-  
-  ::placeholder {
-    color: #5e5e5e;
+  .searchInputWrapper {
+    position: relative;
+    height: 60px;
   }
-  
-  /* hide the placeholder text on focus */
-  :focus::placeholder {
-    text-indent: -999px
-  }
-  
-  .searchInput:focus {
-    outline: none;
-    transform: scale(1.1);
-    transition: all 0.1s ease-in-out;
-  }
-  
-  .searchInputIcon {
-    position: absolute;
-    right: 0.8rem;
-    top: 1rem;
-    color: #a1a1a1;
-    transition: all 0.1s ease-in-out;
-  }
-  .reset {
-    all: unset;
 }
-  .searchInputIcon:hover{
-cursor: pointer;
-  }
-  .fullWidth{
-    display: flex;
-    justify-content: center;
-  }
-  .searchInputWrapper:focus-within > 
-    .reset > .searchInputIcon {
-    right: -0.2rem;
-  }

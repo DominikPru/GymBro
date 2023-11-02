@@ -1,35 +1,38 @@
-
-body{
+body {
   background-color: #121212;
 }
-.containerr{
-  background: rgb(45,20,44);
-  background: linear-gradient(90deg, rgba(45,20,44,1) 0%, rgba(128,19,54,1) 100%);
+.containerr {
+  background: rgb(45, 20, 44);
+  background: linear-gradient(
+    90deg,
+    rgba(45, 20, 44, 1) 0%,
+    rgba(128, 19, 54, 1) 100%
+  );
   width: 1400px;
   border-radius: 20px;
   box-shadow: 0 10px 10px #111;
-height: 80%;
-display: flex;
-justify-content: start;
-align-items: center;
-color: #fff;
+  height: 80%;
+  display: flex;
+  justify-content: start;
+  align-items: center;
+  color: #fff;
 }
-.mgr30{
+.mgr30 {
   margin-right: 70px;
 }
 
-.input_title{
-justify-content: end;
-display: flex;
-width: 51%;
+.input_title {
+  justify-content: end;
+  display: flex;
+  width: 51%;
 }
-.exContainer{
-display: flex;
-flex-direction: row;
-flex-wrap: wrap;
-width: 34rem;
+.exContainer {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  width: 34rem;
 }
-.jc{
+.jc {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -41,36 +44,77 @@ width: 34rem;
   height: 100%;
   display: flex;
   flex-direction: column;
- justify-content: center;
+  justify-content: center;
   align-items: flex-end;
-  
 }
-.SubmitFooter{
+.SubmitFooter {
   display: flex;
   justify-content: center;
   flex-direction: row;
- width: 35%; 
- margin-top: 10px;
+  width: 35%;
+  margin-top: 10px;
 }
 
-.mg10{
+.mg10 {
   margin-top: 5px;
 }
 
-.nomg{
-  margin-top: 0px !important; 
+.nomg {
+  margin-top: 0px !important;
 }
 
-.mgbtm{
+.mgbtm {
   margin-bottom: 10px;
 }
 
-.dark_bg{
-  background: linear-gradient(90deg, #391938, #391938, #2D142C, #2d142c) !important;
+.dark_bg {
+  background: linear-gradient(
+    90deg,
+    #391938,
+    #391938,
+    #2d142c,
+    #2d142c
+  ) !important;
 }
-.dark_bg:before{
-  background: linear-gradient(90deg, #391938, #391938, #2D142C, #2d142c) !important;
+.dark_bg:before {
+  background: linear-gradient(
+    90deg,
+    #391938,
+    #391938,
+    #2d142c,
+    #2d142c
+  ) !important;
 }
 
+@media only screen and (max-width: 767px) {
+  .containerr {
+    height: 100%;
+    z-index: 1;
+    border-radius: 0;
+  }
 
+  .containerrr {
+    width: 100vw;
+  }
 
+  .jc {
+    width: 100vw;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 10px 80px 0px 20px;
+  }
+
+  #root {
+    height: 100% !important;
+  }
+  .exContainer {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+
+    width: 100vw;
+    justify-content: center;
+  }
+}

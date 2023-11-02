@@ -25,7 +25,7 @@ function NewWorkout({ getExercices, handleChangeMessage }: Props) {
             <input
               className="searchInput"
               type="text"
-              placeholder="Search for an exercise and see what pops up"
+              placeholder="Search for an exercise"
             />
             <i
               className="searchInputIcon fa fa-search"

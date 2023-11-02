@@ -1,35 +1,34 @@
-import React, { useState } from 'react';
-import ReactDOM from 'react-dom/client';
-import App from './components/App';
-import Login from './components/Login';
-import reportWebVitals from './reportWebVitals';
+import React, { useState } from "react";
+import ReactDOM from "react-dom/client";
+import App from "./components/App";
+import Login from "./components/Login";
+import reportWebVitals from "./reportWebVitals";
 
 const root = ReactDOM.createRoot(
-  document.getElementById('root') as HTMLElement
+  document.getElementById("root") as HTMLElement
 );
 
-type Props = {}
+type Props = {};
 
 export default function Index({}: Props) {
-const [loggedIn, setLogged] = useState(false)
-const [userId, setUserId] = useState("")
-if (loggedIn){
-  return(
-    <React.StrictMode>
-      <App userId={userId}/>
-    </React.StrictMode>
-  );
-}
-else{
-  return(
-    <React.StrictMode>
-      <Login logedIn={setLogged} setUserId={setUserId}/>
-    </React.StrictMode>
-  );
-}
+  const [loggedIn, setLogged] = useState(false);
+  const [userId, setUserId] = useState("");
+  if (loggedIn) {
+    return (
+      <React.StrictMode>
+        <App userId={userId} />
+      </React.StrictMode>
+    );
+  } else {
+    return (
+      <React.StrictMode>
+        <Login logedIn={setLogged} setUserId={setUserId} />
+      </React.StrictMode>
+    );
+  }
 }
 
-root.render(<div><Index/></div>)
+root.render(<Index />);
 
 // If you want to start measuring performance in your app, pass a function
 // to log results (for example: reportWebVitals(console.log))

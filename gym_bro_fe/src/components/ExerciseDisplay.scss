@@ -1,9 +1,14 @@
-.imgEx{
-    border-radius: 20px;
-    border: 3px black solid;
+.imgEx {
+  border-radius: 20px;
+  border: 3px black solid;
 }
-.containerDiv{
-    width: 20%;
-    display: flex;
-    justify-content: space-between;
+.containerDiv {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}
+@media only screen and (max-width: 767px) {
+  .button {
+    width: 70px;
+  }
 }

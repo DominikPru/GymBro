@@ -1,10 +1,9 @@
 @import url("https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,300;0,400;0,500;0,600;1,600;1,700&display=swap");
 
-$one: #C72C41; //lightest
+$one: #c72c41; //lightest
 $two: #801336;
-$three: #510A32;
-$four: #2D142C; //darkest
-
+$three: #510a32;
+$four: #2d142c; //darkest
 
 body {
   display: grid;
@@ -13,14 +12,13 @@ body {
   height: 100vh;
   background-color: #121212;
 }
-/* headings */
+
 h1 {
   font-weight: bold;
   margin: 0;
   font-size: 20px;
 }
-/* headings */
-/* paragraphs */
+
 p {
   font-size: 0.9em;
   font-weight: 200;
@@ -29,15 +27,11 @@ p {
   margin: 20px 0;
 }
 
-.marginSet20{
-
-margin: 20px;
-color:white;
-
+.marginSet20 {
+  margin: 20px;
+  color: white;
 }
 
-/* paragraphs */
-/* span tags */
 span {
   font-size: 14px;
   color: #a9a9a9;
@@ -46,7 +40,7 @@ span .forgot {
   color: #c850c0;
   cursor: pointer;
 }
-/* span tags */
+
 a {
   color: #333;
   font-size: 14px;
@@ -54,7 +48,6 @@ a {
   margin: 15px 0;
 }
 
-/* form */
 form {
   background-color: transparent;
   display: flex;
@@ -65,8 +58,7 @@ form {
   height: 100%;
   text-align: center;
 }
-/* form */
-/* input fields */
+
 input {
   background-color: #ecececdd;
   border: none;
@@ -78,9 +70,7 @@ input {
   outline: none;
   border-radius: 5px;
 }
-/* input fields */
 
-/* button */
 button {
   text-decoration: none;
   position: relative;
@@ -137,25 +127,41 @@ button:active {
   background: linear-gradient(90deg, $one, $three, $four, $two);
 }
 
-/* button */
+.mobileContainer {
+  padding: 70px 0px;
+  background-color: hsla(0, 100%, 100%, 0.05);
+  box-shadow:
+		/* offset-x | offset-y | blur-radius | spread-radius | color */ 0px
+      1px 1px 0px hsla(0, 0%, 0%, 0.14),
+    0px 2px 1px -1px hsla(0, 0%, 0%, 0.12), 0px 1px 3px 0px hsla(0, 0%, 0%, 0.2);
+  border-radius: 2em;
+  margin: 0px 20px;
+  width: 320px;
+}
 
-/* message */
-.messageText{
+.messageText {
   display: flex;
   justify-content: center;
-  color: white; 
+  color: white;
   margin-bottom: 10px;
 }
-/* !message */
 
-/* container */
+.messageTextM {
+  display: flex;
+  justify-content: center;
+  text-align: center;
+  font-size: 12px;
+  color: white;
+  margin: 0px 20px;
+  margin-bottom: 10px;
+}
+
 .container {
   background-color: hsla(0, 100%, 100%, 0.05);
   box-shadow:
-		/* offset-x | offset-y | blur-radius | spread-radius | color */
-		0px 1px 1px 0px hsla(0,0%,0%,0.14), 
-		0px 2px 1px -1px hsla(0,0%,0%,0.12), 
-		0px 1px 3px 0px hsla(0,0%,0%,0.2);
+		/* offset-x | offset-y | blur-radius | spread-radius | color */ 0px
+      1px 1px 0px hsla(0, 0%, 0%, 0.14),
+    0px 2px 1px -1px hsla(0, 0%, 0%, 0.12), 0px 1px 3px 0px hsla(0, 0%, 0%, 0.2);
   border-radius: 2em;
   position: relative;
   overflow: hidden;
@@ -181,9 +187,7 @@ button:active {
   z-index: 2;
   opacity: 1;
 }
-/* container */
 
-/* active container */
 .container.right-panel-active .sign_in {
   transform: translateX(100%);
   opacity: 0;
@@ -207,9 +211,6 @@ button:active {
   }
 }
 
-/* active container */
-
-/* overlay container*/
 .overlay-container {
   position: absolute;
   top: 0;
@@ -222,12 +223,7 @@ button:active {
 }
 .overlay {
   background-color: $one;
-  background-image: linear-gradient(
-    43deg,
-    $two 0%,
-    $four 46%,
-    $three 100%
-  );
+  background-image: linear-gradient(43deg, $two 0%, $four 46%, $three 100%);
   background-repeat: no-repeat;
   background-size: cover;
   background-position: 0 0;
@@ -273,11 +269,7 @@ button:active {
 .container.right-panel-active .overlay-right {
   transform: translateX(0%);
 }
-/* container switch */
 
-/* overlay container */
-
-/* social container */
 .social-container {
   margin: 20px 0;
 }
@@ -292,4 +284,17 @@ button:active {
   width: 40px;
   cursor: pointer;
 }
-/* social container */
+
+@media only screen and (max-width: 767px) {
+  #root {
+    height: 100% !important;
+    display: flex;
+    align-items: center;
+  }
+}
+
+.jcn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
