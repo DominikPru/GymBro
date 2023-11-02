@@ -1,5 +1,3 @@
-WARNING: The app isnt responsive, so only use it on desktop.
-
 A simple fitness app for creating a workout plan.
 
 You can find a manual on each tab in the app on login.
