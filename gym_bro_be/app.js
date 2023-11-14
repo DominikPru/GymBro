@@ -228,7 +228,7 @@ app.post("/register", (req, res) => {
   insertRegister(req, res);
 });
 
-app.post("/login", (req, res) => {
+app.get("/login", (req, res) => {
   console.log(req.body.Email);
   checkLogin(req, res);
 });
@@ -237,11 +237,11 @@ app.post("/new_exercise", (req, res) => {
   insertExercise(req, res);
 });
 
-app.post("/check_exercise", (req, res) => {
+app.get("/check_exercise", (req, res) => {
   checkExercise(req, res);
 });
 
-app.post("/get_all_exercise", (req, res) => {
+app.get("/get_all_exercise", (req, res) => {
   getAllExercise(req, res);
 });
 
@@ -249,7 +249,7 @@ app.post("/rem_exercise", (req, res) => {
   remExercise(req, res);
 });
 
-app.post("/get_exercise", (req, res) => {
+app.get("/get_exercise", (req, res) => {
   getExercise(req, res);
 });
 
@@ -257,7 +257,7 @@ app.post("/update_exercise", (req, res) => {
   updateExercise(req, res);
 });
 
-app.post("/handshake", (req, res) => {
+app.get("/handshake", (req, res) => {
   console.log("Handshake recieved");
 });
 
