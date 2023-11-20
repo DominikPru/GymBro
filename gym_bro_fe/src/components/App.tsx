@@ -27,11 +27,11 @@ export default function App({ userId }: Props) {
   //Gets all selected exercises of the current user
   async function GetUsersEx() {
     try {
-      const response = await axios.post(
-        "http://localhost:8888/get_all_exercise",
-        {
+      const response = await axios.get(
+        "http://localhost:8888/get_all_exercise",{
+        params: {
           UserId: userId,
-        }
+        }}
       );
 
       const responseData = response.data;
