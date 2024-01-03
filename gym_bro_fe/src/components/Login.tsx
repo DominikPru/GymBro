@@ -33,7 +33,6 @@ export default function Login({ logedIn, setUserId }: Props) {
   //end of register StateHooks
   const [count, setCount] = useState(0);
   const [message, setMessage] = useState(
-    "Please allow the Back-End server to load before interacting (eta 8s)"
   );
 
   //register the user, happenes after button click
