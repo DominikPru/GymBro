@@ -22,7 +22,8 @@ The backend is a Node.js application that uses Express.js for the server and Mon
 
 1. Navigate to the `gym_bro_be/` directory.
 2. Install dependencies with `npm install`.
-3. Start the server with `node app.js`.
+3. Add your MongoDB connection string to the `uri` variable in app.js
+4. Start the server with `npm start`.
 
 ### Frontend (`gym_bro_fe/`)
 
@@ -39,10 +40,6 @@ The frontend is a React application that provides a user interface for the fitne
 1. Navigate to the `gym_bro_fe/` directory.
 2. Install dependencies with `npm install`.
 3. Start the React development server with `npm start`.
-4. Navigate to the `gym_bro_be/` directory.
-5. Install dependencies as in step 2.
-6. Add your MongoDB connection string to the `uri` variable in app.js
-7. Start the node.js development server as in step 3.
 
-Want to see the app in action?
+## Want to see the app in action?
 Visit https://exercisedemo.onrender.com/
